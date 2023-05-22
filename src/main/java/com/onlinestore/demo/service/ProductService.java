@@ -1,11 +1,12 @@
 package com.onlinestore.demo.service;
 
 import java.util.Optional;
+
+import com.onlinestore.demo.model.Product;
+import com.onlinestore.demo.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import com.example.demo.model.Product;
-import com.example.demo.repository.ProductRepository;
 
 @Service
 public class ProductService{
