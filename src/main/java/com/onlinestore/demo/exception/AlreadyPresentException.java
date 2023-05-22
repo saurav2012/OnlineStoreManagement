@@ -2,10 +2,10 @@ package com.onlinestore.demo.exception;
 
 import java.io.Serial;
 
-public class UserNotFoundException extends RuntimeException{
+public class AlreadyPresentException extends RuntimeException{
     @Serial
     private static final long serialVersionUID = 1L;
-    public UserNotFoundException(String msg){
+    public AlreadyPresentException(String msg){
         super(msg);
     }
 }

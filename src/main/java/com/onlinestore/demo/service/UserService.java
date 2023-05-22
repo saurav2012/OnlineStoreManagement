@@ -1,6 +1,7 @@
 package com.onlinestore.demo.service;
 
-import com.onlinestore.demo.exception.UserNotFoundException;
+import com.onlinestore.demo.exception.AlreadyPresentException;
+import com.onlinestore.demo.exception.NotFoundException;
 import com.onlinestore.demo.model.User;
 import com.onlinestore.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,10 @@ public class UserService {
     private UserRepository userRepository;
 
     public User save(User user){
+        Optional<User> presentUser = userRepository.findByUsername(user.getUsername());
+        if(presentUser.isPresent()){
+            throw new AlreadyPresentException(user.getUsername() + " is already present with id " + presentUser.get().getId());
+        }
         return userRepository.save(user);
     }
     public List<User> getAll(){
@@ -25,12 +30,12 @@ public class UserService {
         if(user.isPresent()){
             return user.get();
         }else
-           throw new UserNotFoundException("User with id "+ id+" not present");
+           throw new NotFoundException("User with id "+ id+" not present");
     }
     public User update(User user){
         Optional<User> data = userRepository.findById(user.getId());
         if(data.isEmpty()){
-            throw new UserNotFoundException("User with id "+ user.getId() +" not present. So update cannot be performed");
+            throw new NotFoundException("User with id "+ user.getId() +" not present. So update cannot be performed");
         }
         return userRepository.save(user);
     }
@@ -38,7 +43,7 @@ public class UserService {
     public void deleteUserById(Long id){
         Optional<User> data = userRepository.findById(id);
         if(data.isEmpty()){
-            throw new UserNotFoundException("User with id "+ id+" not present. So update cannot be performed");
+            throw new NotFoundException("User with id "+ id+" not present. So update cannot be performed");
         }
         userRepository.deleteById(id);;
     }
