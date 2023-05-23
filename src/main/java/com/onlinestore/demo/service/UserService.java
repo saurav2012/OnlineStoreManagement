@@ -2,7 +2,7 @@ package com.onlinestore.demo.service;
 
 import com.onlinestore.demo.exception.AlreadyPresentException;
 import com.onlinestore.demo.exception.NotFoundException;
-import com.onlinestore.demo.model.User;
+import com.onlinestore.demo.model.Users;
 import com.onlinestore.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,35 +15,35 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User save(User user){
-        Optional<User> presentUser = userRepository.findByUsername(user.getUsername());
+    public Users save(Users users){
+        Optional<Users> presentUser = userRepository.findByUsername(users.getUsername());
         if(presentUser.isPresent()){
-            throw new AlreadyPresentException(user.getUsername() + " is already present with id " + presentUser.get().getId());
+            throw new AlreadyPresentException(users.getUsername() + " is already present with id " + presentUser.get().getId());
         }
-        return userRepository.save(user);
+        return userRepository.save(users);
     }
-    public List<User> getAll(){
+    public List<Users> getAll(){
         return userRepository.findAll();
     }
-    public User getUserById(Long id){
-        Optional<User> user = userRepository.findById(id);
+    public Users getUserById(Long id){
+        Optional<Users> user = userRepository.findById(id);
         if(user.isPresent()){
             return user.get();
         }else
            throw new NotFoundException("User with id "+ id+" not present");
     }
-    public User update(User user){
-        Optional<User> data = userRepository.findById(user.getId());
+    public Users update(Users users){
+        Optional<Users> data = userRepository.findById(users.getId());
         if(data.isEmpty()){
-            throw new NotFoundException("User with id "+ user.getId() +" not present. So update cannot be performed");
+            throw new NotFoundException("User with id "+ users.getId() +" not present. So update cannot be performed");
         }
-        return userRepository.save(user);
+        return userRepository.save(users);
     }
 
     public void deleteUserById(Long id){
-        Optional<User> data = userRepository.findById(id);
+        Optional<Users> data = userRepository.findById(id);
         if(data.isEmpty()){
-            throw new NotFoundException("User with id "+ id+" not present. So update cannot be performed");
+            throw new NotFoundException("User with id "+ id+" not present. So delete cannot be performed");
         }
         userRepository.deleteById(id);;
     }

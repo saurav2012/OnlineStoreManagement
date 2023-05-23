@@ -2,9 +2,9 @@ package com.onlinestore.demo.controller;
 
 import com.onlinestore.demo.exception.AlreadyPresentException;
 import com.onlinestore.demo.exception.NotFoundException;
-import com.onlinestore.demo.model.ErrorResponse;
-import com.onlinestore.demo.model.Product;
-import com.onlinestore.demo.model.User;
+import com.onlinestore.demo.model.*;
+import com.onlinestore.demo.service.OrderItemService;
+import com.onlinestore.demo.service.OrderService;
 import com.onlinestore.demo.service.ProductService;
 import com.onlinestore.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +19,22 @@ public class OnlineStoreController {
     UserService userService;
     @Autowired
     ProductService productService;
+    @Autowired
+    OrderService orderService;
+
+    @Autowired
+    OrderItemService orderItemService;
 
     @PostMapping("/user/save")
-    public User addUser(@RequestBody User user){
-        return userService.save(user);
+    public Users addUser(@RequestBody Users users){
+        return userService.save(users);
     }
     @GetMapping("/user")
-    public List<User> getAllUser(){
+    public List<Users> getAllUser(){
         return userService.getAll();
     }
     @GetMapping("/user/{id}")
-    public User getUserById(@PathVariable Long id){
+    public Users getUserById(@PathVariable Long id){
         return userService.getUserById(id);
     }
     @DeleteMapping("/user/delete/{id}")
@@ -37,9 +42,11 @@ public class OnlineStoreController {
         userService.deleteUserById(id);
     }
     @PutMapping("/user/update")
-    public User updateUser(@RequestBody User user){
-        return userService.update(user);
+    public Users updateUser(@RequestBody Users users){
+        return userService.update(users);
     }
+
+    //products endpoints
 
     @PostMapping("/product/save")
     public Product addProduct(@RequestBody Product product){
@@ -62,12 +69,57 @@ public class OnlineStoreController {
         return productService.update(product);
     }
 
+    // orders endpoints
+    @PostMapping("/orders/save")
+    public Orders addOrders(@RequestBody Orders orders){
+        return orderService.save(orders);
+    }
+    @GetMapping("/orders")
+    public List<Orders> getAllOrders(){
+        return orderService.getAll();
+    }
+    @GetMapping("/orders/{id}")
+    public Orders getOrdersById(@PathVariable Long id){
+        return orderService.getOrdersById(id);
+    }
+    @DeleteMapping("/orders/delete/{id}")
+    public void deleteOrderById(@PathVariable Long id){
+        orderService.deleteOrdersById(id);
+    }
+    @PutMapping("/orders/update")
+    public Orders updateOrders(@RequestBody Orders orders){
+        return orderService.update(orders);
+    }
+
+    // orderItems
+    @PostMapping("/orderItems/save")
+    public OrderItem addOrderItem(@RequestBody OrderItem orderItem){
+        return orderItemService.save(orderItem);
+    }
+    @GetMapping("/orderItems")
+    public List<OrderItem> getAllOrderItems(){
+        return orderItemService.getAll();
+    }
+    @GetMapping("/orderItems/{id}")
+    public OrderItem getOrderItemsById(@PathVariable Long id){
+        return orderItemService.getOrderItemsById(id);
+    }
+    @DeleteMapping("/orderItems/delete/{id}")
+    public void deleteOrdeItemById(@PathVariable Long id){
+        orderItemService.deleteOrderItemsById(id);
+    }
+    @PutMapping("/orderItems/update")
+    public OrderItem updateOrderItems (@RequestBody OrderItem orderItem){
+        return orderItemService.update(orderItem);
+    }
+
+
     // handles exceptions ...
     @ExceptionHandler(value = NotFoundException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFoundException(NotFoundException ex)
     {
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(),ex.getMessage());
+        return new ErrorResponse(HttpStatus.NOT_FOUND.value(),ex.getMessage());
     }
     @ExceptionHandler(value = AlreadyPresentException.class)
     @ResponseStatus(HttpStatus.CONFLICT)

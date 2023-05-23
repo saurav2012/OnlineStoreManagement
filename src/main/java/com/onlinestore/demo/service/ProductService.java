@@ -5,7 +5,6 @@ import java.util.Optional;
 import com.onlinestore.demo.exception.AlreadyPresentException;
 import com.onlinestore.demo.exception.NotFoundException;
 import com.onlinestore.demo.model.Product;
-import com.onlinestore.demo.model.User;
 import com.onlinestore.demo.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,7 +48,7 @@ public class ProductService{
     public void deleteProductById(Long id){
         Optional<Product> data = productRepository.findById(id);
         if(data.isEmpty()){
-            throw new NotFoundException("Product with id " + id + " not present. So update cannot be performed");
+            throw new NotFoundException("Product with id " + id + " not present. So delete cannot be performed");
         }
         productRepository.deleteById(id);;
     }
