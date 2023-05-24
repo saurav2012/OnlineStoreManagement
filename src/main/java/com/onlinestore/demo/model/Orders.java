@@ -22,7 +22,7 @@ public class Orders {
     private Double totalPrice;
 
     @OneToMany(mappedBy = "orders")
-    private Set<OrderItem> orderItems = new HashSet<>();
+    private Set<OrderItem> orderItems;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
