@@ -1,5 +1,6 @@
 package com.onlinestore.demo.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,8 +23,8 @@ public class Orders {
     private int totalQuantity;
     private Double totalPrice;
 
-    @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name = "order_id",referencedColumnName = "id")
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "orders")
+    @JsonManagedReference
     private List<OrderItem> orderItems;
 
     @OneToOne(fetch = FetchType.LAZY)

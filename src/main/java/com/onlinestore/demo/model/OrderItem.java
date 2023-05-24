@@ -21,5 +21,9 @@ public class OrderItem {
     @JoinColumn(name="product_id")
     private Product product;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id")
+    @JsonBackReference
+    private Orders orders;
 
 }
