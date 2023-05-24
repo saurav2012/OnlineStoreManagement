@@ -1,11 +1,12 @@
 package com.onlinestore.demo.model;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.*;
+import java.util.List;
+
 
 @Data
 @AllArgsConstructor
@@ -21,10 +22,11 @@ public class Orders {
     private int totalQuantity;
     private Double totalPrice;
 
-    @OneToMany(mappedBy = "orders")
-    private Set<OrderItem> orderItems;
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name = "order_id",referencedColumnName = "id")
+    private List<OrderItem> orderItems;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private Users users;
 
